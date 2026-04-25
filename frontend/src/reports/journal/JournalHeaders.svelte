@@ -19,7 +19,7 @@
     <p>
       <button
         type="button"
-        class="datecell unset"
+        class="datecell unset flat-header"
         data-order={name === "date" ? order : undefined}
         {disabled}
         onclick={() => {
@@ -30,7 +30,7 @@
       </button>
       <button
         type="button"
-        class="flag unset"
+        class="flag unset flat-header"
         data-order={name === "flag" ? order : undefined}
         {disabled}
         onclick={() => {
@@ -41,7 +41,7 @@
       </button>
       <button
         type="button"
-        class="description unset"
+        class="description unset flat-header"
         data-order={name === "narration" ? order : undefined}
         {disabled}
         onclick={() => {
@@ -69,5 +69,9 @@
 
   button {
     position: relative;
+  }
+
+  .flat-header {
+    border-radius: 0 !important;
   }
 </style>

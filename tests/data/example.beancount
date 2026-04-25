@@ -70,6 +70,12 @@ plugin "beancount.plugins.auto_accounts"
 
 2012-12-12 query "journal" "journal"
 
+2012-12-12 query "journal1" "journal1"
+
+2012-12-12 query "journal2" "journal2"
+
+2012-12-12 query "journal3" "journal3"
+
 2012-12-15 note Expenses:Other "Just some comment"
     meta: "Value"
     test: TRUE

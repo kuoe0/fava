@@ -174,6 +174,15 @@ textarea {
   padding: var(--input-padding, 6px 10px);
   background: var(--placeholder-background);
   border: var(--input-border, 1px solid var(--border-darker));
+  border-radius: 6px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--link-color);
+  box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.2);
 }
 
 label {
@@ -215,13 +224,16 @@ input[type="text"]:placeholder-shown {
 
 button,
 .button {
-  padding: 0.5em 0.75em;
+  padding: 0.6em 1.2em;
+  font-weight: 500;
   color: var(--button-color);
   cursor: pointer;
   outline: 0;
   background-color: var(--button-background);
   border: 0;
-  border-radius: 0;
+  border-radius: 8px;
+  transition: transform 0.1s, filter 0.2s, box-shadow 0.2s;
+  box-shadow: var(--box-shadow-button);
 }
 
 button:disabled {
@@ -249,8 +261,13 @@ button:hover,
 .button:focus,
 .button:active,
 .button:hover {
-  box-shadow: var(--box-shadow-button);
-  filter: brightness(90%);
+  filter: brightness(110%);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -2px rgb(0 0 0 / 5%);
+}
+
+button:active,
+.button:active {
+  transform: translateY(1px);
 }
 
 button.unset {
@@ -258,16 +275,47 @@ button.unset {
   color: inherit;
   text-align: left;
   background: unset;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 button.unset:active,
 button.unset:focus,
 button.unset:hover {
   box-shadow: unset;
+  filter: none;
 }
 
 button.unset:focus-visible {
   outline: var(--link-color) dotted 2px;
+}
+
+/* Button Group / Segmented Control */
+.button-group {
+  display: inline-flex;
+  gap: 2px;
+  padding: 4px;
+  background-color: var(--background-darker);
+  border-radius: 12px;
+}
+
+.button-group .button {
+  padding: 0.4em 1em;
+  color: var(--text-color-lighter);
+  background-color: transparent;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.button-group .button:hover {
+  color: var(--text-color);
+  background-color: var(--background-button);
+}
+
+.button-group .button:not(.muted) {
+  color: var(--button-color);
+  background-color: var(--button-background);
+  box-shadow: var(--box-shadow-button);
 }
 
 button:disabled,

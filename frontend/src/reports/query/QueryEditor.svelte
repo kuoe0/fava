@@ -3,6 +3,7 @@
   import type { CodemirrorBql } from "../../codemirror/types.ts";
   import { _ } from "../../i18n.ts";
   import { keyboardShortcut } from "../../keyboard-shortcuts.ts";
+  import { Play } from "@lucide/svelte";
 
   interface Props {
     value: string;
@@ -36,8 +37,9 @@
   }}
 >
   <div {@attach attach_editor(editor)}></div>
-  <button type="submit" {@attach keyboardShortcut("Control+Enter")}>
-    {_("Submit")}
+  <button type="submit" {@attach keyboardShortcut("Control+Enter")} aria-label={_("Submit")}>
+    <Play size={16} />
+    <span>{_("Submit")}</span>
   </button>
 </form>
 
@@ -49,7 +51,22 @@
   }
 
   button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    height: 32px;
+    padding: 0 1em;
     margin: 0;
+    background-color: var(--link-color);
+    color: var(--background);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  button:hover {
+    background-color: var(--link-hover-color);
   }
 
   div {

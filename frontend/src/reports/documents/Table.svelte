@@ -37,45 +37,67 @@
   let sorted_documents = $derived(sorter.sort(filtered_documents));
 </script>
 
-<table>
-  <thead>
-    <tr>
-      {#each columns as column (column)}
-        <SortHeader bind:sorter {column} />
-      {/each}
-    </tr>
-  </thead>
-  <tbody>
-    {#each sorted_documents as doc (doc.filename)}
-      <tr
-        class:selected={selected === doc}
-        draggable={true}
-        title={doc.filename}
-        ondragstart={(ev) => {
-          ev.dataTransfer?.setData("fava/filename", doc.filename);
-        }}
-        onclick={() => {
-          selected = doc;
-        }}
-      >
-        <td>{doc.date}</td>
-        <td>{name(doc)}</td>
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        {#each columns as column (column)}
+          <SortHeader bind:sorter {column} />
+        {/each}
       </tr>
-    {/each}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {#each sorted_documents as doc (doc.filename)}
+        <tr
+          class:selected={selected === doc}
+          draggable={true}
+          title={doc.filename}
+          ondragstart={(ev) => {
+            ev.dataTransfer?.setData("fava/filename", doc.filename);
+          }}
+          onclick={() => {
+            selected = doc;
+          }}
+        >
+          <td>{doc.date}</td>
+          <td>{name(doc)}</td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+</div>
 
 <style>
+  .table-container {
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
+  }
+
   table {
     width: 100%;
+    border-collapse: collapse;
   }
 
   tr {
     cursor: pointer;
+    transition: background-color 0.2s;
   }
 
   .selected,
   tr:hover {
-    background-color: var(--table-header-background);
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  th, td {
+    padding: 0.75em 1em;
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
   }
 </style>

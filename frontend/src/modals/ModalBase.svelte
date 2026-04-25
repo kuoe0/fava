@@ -10,11 +10,13 @@
 
   import { attemptFocus, getFocusableElements } from "../lib/focus.ts";
   import { router } from "../router.ts";
+  import { X } from "@lucide/svelte";
 
   interface Props {
     shown: boolean;
     focus?: string;
     closeHandler?: () => void;
+    showCloseButton?: boolean;
     children: Snippet;
   }
 
@@ -22,6 +24,7 @@
     shown,
     focus,
     closeHandler = router.close_overlay,
+    showCloseButton = true,
     children,
   }: Props = $props();
 
@@ -66,9 +69,11 @@
     <div class="background" onclick={closeHandler} aria-hidden="true"></div>
     <div class="content" role="dialog" aria-modal="true" {@attach handleFocus}>
       {@render children()}
-      <button type="button" class="muted close" onclick={closeHandler}>
-        x
-      </button>
+      {#if showCloseButton}
+        <button type="button" class="close" onclick={closeHandler} aria-label="Close">
+          <X size={16} />
+        </button>
+      {/if}
     </div>
   </div>
 {/if}
@@ -107,19 +112,35 @@
     padding: 1em;
     margin: 0.5em;
     margin-top: 10vh;
-    background: var(--background);
-    box-shadow: var(--box-shadow-overlay);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow);
   }
 
   .close {
     position: absolute;
-    top: 1em;
-    right: 1em;
-    width: 2em;
-    height: 2em;
+    top: 0.5em;
+    right: 0.5em;
+    width: 24px !important;
+    height: 24px !important;
     margin: 0;
-    line-height: 1em;
+    padding: 0;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
     color: var(--text-color-lighter);
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 50% !important;
+    box-shadow: none !important;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .close:hover {
+    color: var(--text-color);
+    background-color: rgba(255, 255, 255, 0.1) !important;
   }
 
   .content :global(form),
@@ -128,20 +149,24 @@
   }
 
   @media (width <= 767px) {
-    /* Show the modal full-screen on mobile. */
+    /* Show the modal as a bottom sheet on mobile. */
     .overlay {
       height: 100%;
+      align-items: flex-end;
     }
 
     .background {
-      /* Ensure that modal overflow gets a white background. */
-      background: var(--background);
+      /* Keep the dim background */
+      background: var(--overlay-wrapper-background);
     }
 
     .content {
-      height: 100%;
+      height: auto;
+      max-height: 85vh;
       margin: 0;
-      box-shadow: unset;
+      border-radius: 24px 24px 0 0;
+      box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.2);
+      overflow-y: auto;
     }
   }
 </style>

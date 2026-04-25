@@ -131,7 +131,7 @@
   }
 
   form > :global(span) {
-    max-width: 18rem;
+    flex-grow: 1;
   }
 
   form :global(input) {

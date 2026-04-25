@@ -1,29 +1,44 @@
-<!--
-  @component
-  A single top level menu item in an app menu.
-
-  The default slot should filled with its vertically arranged sub-items.
--->
 <script lang="ts">
   import type { Snippet } from "svelte";
+  import { ChevronDown } from "@lucide/svelte";
+  import { onMount } from "svelte";
 
   interface Props {
     /** The name of the menu item. */
     name: string;
     children: Snippet;
+    open?: boolean;
   }
 
-  let { name, children }: Props = $props();
+  let { name, children, open = $bindable(false) }: Props = $props();
 
-  let open = $state(false);
+  let spanElement: HTMLElement;
+
+  onMount(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (open && spanElement && !spanElement.contains(event.target as Node)) {
+        open = false;
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  });
 </script>
 
 <span
+  bind:this={spanElement}
   class:open
   tabindex="0"
   role="menuitem"
-  onblur={() => {
-    open = false;
+  onclick={() => {
+    open = !open;
+  }}
+  onblur={(e) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+      open = false;
+    }
   }}
   onkeydown={(event) => {
     if (event.key === "Escape") {
@@ -32,9 +47,11 @@
       open = true;
     }
   }}
+  style="display: inline-flex; align-items: center; gap: 0.25em; position: relative;"
 >
   {name}
-  <ul role="menu">
+  <ChevronDown size={12} />
+  <ul role="menu" class:visible={open}>
     {@render children()}
   </ul>
 </span>
@@ -51,24 +68,30 @@
   }
 
   span::after {
-    content: "▾";
+    /* Removed content since we use Lucide icon */
   }
 
   ul {
     position: absolute;
+    top: 100%;
+    left: 0;
     z-index: var(--z-index-floating-ui);
     display: none;
-    width: 500px;
+    width: max-content;
+    min-width: 250px;
+    max-width: 90vw;
     max-height: 400px;
-    margin: 0.7em 0 0 -0.5em; /* The top margin should match the (bottom) padding of the span above. */
+    margin: 0.5rem 0 0 0;
     overflow-y: auto;
-    background-color: var(--background);
-    border: 1px solid var(--border);
-    box-shadow: var(--box-shadow-dropdown);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    box-shadow: var(--glass-shadow);
+    padding: 0.5rem;
   }
 
-  span.open > ul,
-  span:hover > ul {
+  ul.visible {
     display: block;
   }
 </style>

@@ -15,6 +15,7 @@
     https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
 -->
 <script lang="ts">
+  import { ChevronDown } from "@lucide/svelte";
   interface Props {
     /** The currently entered value. */
     value: string;
@@ -168,7 +169,8 @@
       }
     }}
   >
-    {description(value)}
+    <span>{description(value)}</span>
+    <ChevronDown size={14} />
   </button>
   <ul {hidden} role="listbox" id={listbox_id} bind:this={ul}>
     {#each options as option, i (option)}
@@ -194,24 +196,51 @@
     display: inline-block;
   }
 
+  button[role="combobox"] {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.4em 1em !important;
+    height: 32px !important;
+    color: var(--text-color-lighter);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    box-shadow: var(--glass-shadow);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  button[role="combobox"]:hover {
+    color: var(--text-color);
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
   ul {
     position: absolute;
-    z-index: var(--z-index-autocomplete);
+    z-index: 1000 !important;
     overflow: auto;
-    background-color: var(--background);
-    border: 1px solid var(--border-darker);
-    box-shadow: var(--box-shadow-dropdown);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    box-shadow: var(--glass-shadow);
+    margin-top: 4px;
+    padding: 4px;
   }
 
   li {
-    padding: 2px 5px;
+    padding: 6px 12px;
     white-space: nowrap;
     cursor: pointer;
+    border-radius: 6px;
+    color: var(--text-color-lighter);
+    transition: background-color 0.2s, color 0.2s;
   }
 
   li.current {
-    padding: 0 3px;
-    border: var(--link-color) dotted 2px;
+    border: 1px dashed var(--link-color);
   }
 
   li[aria-selected="true"],

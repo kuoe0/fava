@@ -12,6 +12,7 @@
   import QueryLinks from "./QueryLinks.svelte";
   import QueryTable from "./QueryTable.svelte";
   import ReadonlyQueryEditor from "./ReadonlyQueryEditor.svelte";
+  import { X } from "@lucide/svelte";
 
   interface Props {
     /** The query string. */
@@ -56,8 +57,9 @@
         ev.stopPropagation();
         ondelete();
       }}
+      aria-label="Delete"
     >
-      x
+      <X size={16} />
     </button>
   </summary>
   <div>
@@ -91,5 +93,25 @@
 
   pre {
     margin: 0;
+  }
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    color: var(--text-color-lighter);
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  button:hover {
+    color: var(--text-color);
+    background-color: rgba(255, 255, 255, 0.1);
   }
 </style>

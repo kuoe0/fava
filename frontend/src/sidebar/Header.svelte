@@ -1,5 +1,6 @@
 <script lang="ts">
   import { keyboardShortcut } from "../keyboard-shortcuts.ts";
+  import { ChevronDown, RotateCw, Menu, Plus } from "@lucide/svelte";
   import { router } from "../router.ts";
   import { ledgerData } from "../stores/index.ts";
   import { ledger_title } from "../stores/options.ts";
@@ -8,14 +9,22 @@
   import { has_changes } from "./page-title.ts";
   import PageTitle from "./PageTitle.svelte";
 
+  interface Props {
+    toggle: () => void;
+  }
+  let { toggle }: Props = $props();
+
   let other_ledgers = $derived($ledgerData.other_ledgers);
   let has_dropdown = $derived(other_ledgers.length);
 </script>
 
 <header>
+  <button type="button" class="unset mobile-menu-toggle" onclick={toggle} aria-label="Toggle Sidebar">
+    <Menu size={24} />
+  </button>
   <HeaderIcon />
   <h1>
-    {$ledger_title}{#if has_dropdown}&nbsp;▾{/if}<PageTitle />
+    {$ledger_title}{#if has_dropdown}&nbsp;<ChevronDown size={16} style="display: inline; vertical-align: middle;" />{/if}<PageTitle />
     {#if has_dropdown}
       <div class="beancount-files">
         <ul>
@@ -28,23 +37,60 @@
       </div>
     {/if}
   </h1>
-  <button
-    type="button"
-    hidden={!$has_changes}
-    class="reload-page"
-    {@attach keyboardShortcut("r")}
-    onclick={router.reload}
-  >
-    &#8635;
-  </button>
+  {#if $has_changes}
+    <button
+      type="button"
+      class="reload-page"
+      {@attach keyboardShortcut("r")}
+      onclick={router.reload}
+      aria-label="Reload Page"
+    >
+      <RotateCw size={16} />
+    </button>
+  {/if}
   <span class="spacer"></span>
+  <a class="button add-txn" href="#add-transaction" aria-label="Add Transaction">
+    <Plus size={16} />
+  </a>
   <FilterForm />
 </header>
 
 <style>
+  .mobile-menu-toggle {
+    display: none;
+    color: var(--header-color);
+  }
+
+  .add-txn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    margin-right: 0.5em;
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    box-shadow: var(--glass-shadow);
+  }
+
+  @media (width <= 767px) {
+    .mobile-menu-toggle {
+      display: block;
+    }
+  }
+
   .reload-page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
     color: var(--dark-gray);
     background-color: var(--warning);
+    border-radius: 8px;
   }
 
   h1 {

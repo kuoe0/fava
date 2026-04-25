@@ -1,6 +1,7 @@
 /* stylelint-disable no-descending-specificity */
 
 .flex-table {
+
   p,
   li,
   ul,
@@ -12,7 +13,7 @@
   p {
     display: flex;
 
-    > * {
+    >* {
       flex-shrink: 0;
       padding: 2px 4px;
     }
@@ -23,11 +24,23 @@
     text-align: right;
   }
 
-  .head p > * {
-    padding: 3px 4px;
+  .head p {
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    box-shadow: var(--glass-shadow);
+    overflow: hidden;
+    margin-bottom: 4px;
+    border-bottom: none;
+  }
+
+  .head p>* {
+    padding: 6px 8px;
     font-family: inherit;
-    color: var(--table-header-text);
-    background-color: var(--table-header-background);
+    color: var(--table-header-text) !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
   }
 }
 
@@ -39,9 +52,14 @@
   p,
   dl {
     border-bottom: thin solid var(--table-border);
+    transition: background-color 0.2s;
   }
 
-  > li,
+  p:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+
+  >li,
   &.show-custom .custom.budget,
   &.show-document .document.discovered,
   &.show-document .document.linked,
@@ -125,7 +143,7 @@
 
   /* There's three number columns (units, cost, price).
  * They should add about to about half of the width */
-  p > .num {
+  p>.num {
     width: min(calc(15%), 20rem);
     border-left: 1px solid var(--table-border);
   }
@@ -134,6 +152,7 @@
   .flag {
     text-align: center;
     background-color: var(--entry-background);
+    border-radius: 0 !important;
   }
 
   .datecell {
@@ -214,17 +233,23 @@
     cursor: pointer;
 
     span {
-      min-width: 6px;
-      height: 6px;
-      padding: 0;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 16px !important;
+      height: 16px !important;
       margin-right: 4px;
-      background-color: var(--journal-posting-indicator);
-      border-radius: 3px;
+      color: var(--text-color-lighter);
+      font-size: 12px;
+      transition: transform 0.2s, color 0.2s;
     }
 
-    .pending,
-    .other {
-      background-color: var(--entry-background);
+    span::before {
+      content: "▸" !important;
+    }
+
+    span:hover {
+      color: var(--link-color);
     }
 
     .metadata-indicator {
@@ -235,18 +260,23 @@
       color: var(--journal-metadata-indicator);
       text-transform: lowercase;
       border-radius: 20px;
+      background-color: rgba(255, 255, 255, 0.1);
     }
+  }
+
+  li.show-full-entry .indicators span::before {
+    content: "▾" !important;
   }
 }
 
-@media (width <= 767px) {
+@media (width <=767px) {
   .journal {
     p {
       flex-wrap: wrap;
     }
 
     /* show a colored top border for all entries */
-    > li {
+    >li {
       border-top: thin solid var(--entry-background);
     }
 
@@ -257,7 +287,8 @@
 
     .description {
       flex: inherit;
-      order: 1; /* push to second row */
+      order: 1;
+      /* push to second row */
       width: 100%;
     }
 

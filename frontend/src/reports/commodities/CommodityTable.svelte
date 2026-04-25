@@ -24,22 +24,56 @@
   let quote_name = $derived($currency_name(quote));
 </script>
 
-<table>
-  <thead>
-    <tr>
-      {#each columns as column (column)}
-        <SortHeader bind:sorter {column} />
-      {/each}
-    </tr>
-  </thead>
-  <tbody>
-    {#each sorted_prices as [date, value] (date)}
+<div class="table-container">
+  <table>
+    <thead>
       <tr>
-        <td>{day(date)}</td>
-        <td class="num" title={quote_name}>
-          {$ctx.amount(value, quote)}
-        </td>
+        {#each columns as column (column)}
+          <SortHeader bind:sorter {column} />
+        {/each}
       </tr>
-    {/each}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {#each sorted_prices as [date, value] (date)}
+        <tr>
+          <td>{day(date)}</td>
+          <td class="num" title={quote_name}>
+            {$ctx.amount(value, quote)}
+          </td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .table-container {
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
+    margin-bottom: 1em;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  tr {
+    transition: background-color 0.2s;
+  }
+
+  tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  th, td {
+    padding: 0.5em 0.75em;
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+
+</style>

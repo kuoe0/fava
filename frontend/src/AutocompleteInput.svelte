@@ -19,6 +19,7 @@
     fuzzywrap,
     type FuzzyWrappedText,
   } from "./lib/fuzzy.ts";
+  import { X } from "@lucide/svelte";
 
   interface Props {
     /** The currently entered value (bindable). */
@@ -120,6 +121,28 @@
 
   let expanded = $derived(!hidden && filteredSuggestions.length > 0);
 
+  let list: HTMLUListElement | undefined = $state.raw();
+
+  function portal(node: HTMLElement) {
+    document.body.appendChild(node);
+    return {
+      destroy() {
+        node.remove();
+      }
+    };
+  }
+
+  $effect(() => {
+    if (expanded && input && list) {
+      const rect = input.getBoundingClientRect();
+      list.style.position = "fixed";
+      list.style.top = `${rect.bottom}px`;
+      list.style.left = `${rect.left}px`;
+      list.style.width = "max-content";
+      list.style.maxWidth = "90vw";
+    }
+  });
+
   function keydown(event: KeyboardEvent) {
     if (event.key === "Enter") {
       const suggestion = filteredSuggestions[index]?.suggestion;
@@ -185,12 +208,13 @@
           onSelect?.(input);
         }
       }}
+      aria-label="Clear"
     >
-      ×
+      <X size={16} />
     </button>
   {/if}
   {#if filteredSuggestions.length}
-    <ul {hidden} role="listbox" id={autocomple_id}>
+    <ul {hidden} role="listbox" id={autocomple_id} use:portal bind:this={list}>
       {#each filteredSuggestions as { fuzzywrapped, suggestion }, i (suggestion)}
         <li
           role="option"
@@ -226,18 +250,28 @@
 
   ul {
     position: var(--autocomplete-list-position, absolute);
-    z-index: var(--z-index-autocomplete);
+    left: var(--autocomplete-list-left, auto);
+    z-index: var(--z-index-autocomplete) !important;
     overflow: hidden auto;
-    background-color: var(--background);
-    border: 1px solid var(--border-darker);
-    box-shadow: var(--box-shadow-dropdown);
+    max-height: var(--autocomplete-list-max-height, 50vh);
+    width: max-content;
+    max-width: 90vw;
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    box-shadow: var(--glass-shadow);
+    padding: 4px;
   }
 
   li {
     min-width: 8rem;
-    padding: 0 0.5em;
+    padding: 0.4em 0.75em;
     white-space: nowrap;
     cursor: pointer;
+    border-radius: 8px;
+    margin: 2px 0;
+    transition: background-color 0.2s, color 0.2s;
   }
 
   li.selected,
@@ -248,9 +282,18 @@
 
   button {
     position: absolute;
-    top: 8px;
+    top: 50%;
+    transform: translateY(-50%);
     right: 4px;
     background: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
   }
 
   li span {

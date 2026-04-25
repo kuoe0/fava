@@ -32,5 +32,10 @@
     --input-border: none;
     --input-padding: 0.25em 0.5em 0.25em 1em;
     --autocomplete-list-position: fixed;
+    width: 100%;
+  }
+  li :global(span) {
+    display: block;
+    width: 100%;
   }
 </style>

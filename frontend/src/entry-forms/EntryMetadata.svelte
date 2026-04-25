@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { EntryMetadata } from "../entries/index.ts";
   import { _ } from "../i18n.ts";
+  import { Trash2, Plus } from "@lucide/svelte";
 
   interface Props {
     meta: EntryMetadata;
@@ -15,13 +16,14 @@
   <div class="flex-row">
     <button
       type="button"
-      class="muted round remove-row"
+      class="unset remove-row"
       onclick={() => {
         meta = meta.delete(key);
       }}
       tabindex={-1}
+      aria-label="Remove"
     >
-      ×
+      <Trash2 size={16} />
     </button>
     <input
       type="text"
@@ -53,7 +55,7 @@
         aria-label={_("Add metadata")}
         title={_("Add metadata")}
       >
-        +
+        <Plus size={16} />
       </button>
     {/if}
   </div>

@@ -15,9 +15,11 @@
     node: AccountTreeNode;
     /** Whther to invert all numbers (either `1` or `-1`). */
     invert: number;
+    /** The nesting depth of this node. */
+    depth?: number;
   }
 
-  let { node, invert }: Props = $props();
+  let { node, invert, depth = 0 }: Props = $props();
 
   const not_shown = getTreeTableNotShownContext();
 
@@ -40,7 +42,7 @@
   let dimmed = $derived(!is_toggled && !has_balance);
 </script>
 
-<li>
+<li class:depth-even={depth % 2 === 0} class:depth-odd={depth % 2 !== 0}>
   <p>
     <AccountCell {node} />
     {#each $operating_currency as currency (currency)}
@@ -73,7 +75,7 @@
   {#if !is_toggled && children.some((n) => !$not_shown.has(n.account))}
     <ol>
       {#each children.filter((n) => !$not_shown.has(n.account)) as child (child.account)}
-        <TreeTableNode node={child} {invert} />
+        <TreeTableNode node={child} {invert} depth={depth + 1} />
       {/each}
     </ol>
   {/if}

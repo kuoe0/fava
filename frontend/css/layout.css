@@ -19,7 +19,7 @@ For those reports, the .fixed-fullsize-container be used.
 */
 
 :root {
-  --aside-width: 160px;
+  --aside-width: 220px;
 }
 
 body {
@@ -32,6 +32,10 @@ body {
   width: 100vw;
   height: 100vh;
   padding: 0;
+  background-image: 
+    radial-gradient(at 0% 0%, light-dark(hsl(226deg 100% 90% / 10%), hsl(226deg 100% 20% / 10%)) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, light-dark(hsl(226deg 100% 90% / 10%), hsl(226deg 100% 20% / 10%)) 0px, transparent 50%);
+  background-attachment: fixed;
 }
 
 header {
@@ -40,16 +44,29 @@ header {
   grid-area: header;
   gap: 0.5em;
   align-items: center;
-  padding: 0.5em;
+  padding: 0.5em 1em;
   color: var(--header-color);
-  background-color: var(--header-background);
+  background-color: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  z-index: 2000;
+  position: relative;
 }
 
 article {
   position: relative;
   grid-area: main;
-  padding: 1.5em;
+  padding: 2em;
   overflow-x: auto;
+}
+
+aside {
+  grid-area: aside;
+  background-color: var(--glass-bg);
+  border-right: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  z-index: 3000;
 }
 
 article:has(> .fixed-fullsize-container) {
@@ -77,10 +94,6 @@ article:has(> .fixed-fullsize-container) {
   body:has(> article > .fixed-fullsize-container) {
     display: grid;
     grid-template: "header" max-content "main" 1fr;
-  }
-
-  header {
-    padding-left: 50px;
   }
 }
 
