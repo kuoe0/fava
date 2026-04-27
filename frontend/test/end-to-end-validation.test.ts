@@ -29,7 +29,7 @@ test("validate ledger data", () => {
   deepEqual(store_get(sunburstScale).domain(), res.accounts);
   equal(
     store_get(sunburstScale)("Liabilities:US:Chase:Slate"),
-    "rgb(126, 174, 253)",
+    "#6366f1",
   );
 
   const all_currencies = [

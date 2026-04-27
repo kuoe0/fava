@@ -21,8 +21,8 @@ test("chart helpers (filter ticks)", () => {
 });
 
 test("chart helpers (color scales)", () => {
-  equal(colors10[0], "rgb(126, 174, 253)");
-  equal(colors15[0], "rgb(173, 200, 254)");
+  equal(colors10[0], "#6366f1");
+  equal(colors15[0], "#6366f1");
 });
 
 test("chart helpers (include zero in extent)", () => {

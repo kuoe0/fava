@@ -9,6 +9,7 @@
     lineChartMode,
   } from "../stores/chart.ts";
   import { show_charts } from "../stores/url.ts";
+  import { ChevronDown, ChevronLeft } from "@lucide/svelte";
   import BarChart from "./BarChart.svelte";
   import ChartLegend from "./ChartLegend.svelte";
   import HierarchyContainer from "./HierarchyContainer.svelte";
@@ -69,8 +70,13 @@
     onclick={() => {
       router.set_search_param("charts", $show_charts ? "false" : "");
     }}
+    aria-label={$show_charts ? "Hide charts" : "Show charts"}
   >
-    {$show_charts ? "▼" : "◀"}
+    {#if $show_charts}
+      <ChevronDown size={16} />
+    {:else}
+      <ChevronLeft size={16} />
+    {/if}
   </button>
 </div>
 <div hidden={!$show_charts} bind:clientWidth={width}>
@@ -90,6 +96,25 @@
 <style>
   .flex-row {
     margin-bottom: var(--flex-gap);
+  }
+
+  button.show-charts {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    color: var(--background);
+    background-color: var(--link-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  button.show-charts:hover {
+    background-color: var(--link-hover-color);
   }
 
   @media print {

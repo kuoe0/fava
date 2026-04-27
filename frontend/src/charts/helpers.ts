@@ -82,8 +82,14 @@ export function hclColorRange(
   return colors.map((c) => c.toString());
 }
 
-export const colors10 = hclColorRange(10);
-export const colors15 = hclColorRange(15, 30, 80);
+export const colors10 = [
+  "#6366f1", "#8b5cf6", "#ec4899", "#3b82f6", "#14b8a6",
+  "#10b981", "#f59e0b", "#ef4444", "#64748b", "#06b6d4"
+];
+export const colors15 = [
+  ...colors10,
+  "#f43f5e", "#84cc16", "#0ea5e9", "#d946ef", "#78716c"
+];
 
 /*
  * The color scales for the charts.
