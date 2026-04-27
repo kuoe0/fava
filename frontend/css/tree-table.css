@@ -8,21 +8,29 @@
 
 .tree-table-new p {
   margin-top: -1px;
+  border-top: 1px solid var(--glass-border);
 }
 
-.tree-table-new p > span {
-  margin-right: -1px;
-  border: 1px solid var(--table-border);
+
+
+.tree-table-new .head p {
+  border-bottom: 1px solid var(--table-border);
+}
+
+.tree-table-new .head p > span {
+  border: none !important;
 }
 
 .tree-table-new .num {
   /** Space for about 14 characters, so a number like 1234512345.123 fits. */
   width: 9em;
+  flex-shrink: 0;
 }
 
 .tree-table-new .other {
   /** Space for about 18 (four more) characters, so an amount like 1234512345.123 USD fits. */
   width: 12em;
+  flex-shrink: 0;
 }
 
 .tree-table.fullwidth {
@@ -111,15 +119,21 @@
 }
 
 .tree-table .has-children::before {
-  margin: 0 -10px 0 0;
   content: "";
-  border-top: 5px solid var(--treetable-expander);
-  border-right: 5px solid transparent;
-  border-left: 5px solid transparent;
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid var(--treetable-expander);
+  border-bottom: 2px solid var(--treetable-expander);
+  transform: rotate(45deg);
+  vertical-align: middle;
+  margin: 0 8px 0 4px;
+  transition: transform 0.2s;
 }
 
 .tree-table .num {
   width: 10em;
+  flex-shrink: 0;
 }
 
 .tree-table .num a {
@@ -129,6 +143,7 @@
 
 .tree-table .other {
   width: 13em;
+  flex-shrink: 0;
 }
 
 .tree-table .other a {
@@ -163,7 +178,7 @@
 }
 
 .tree-table .toggled .has-children::before {
-  transform: rotate(270deg);
+  transform: rotate(-45deg);
 }
 
 .tree-table .expand-all {
@@ -199,3 +214,60 @@
 .two-currencies .other {
   width: 11em;
 }
+
+/* Force flex: 1 for account-cell to fill space and align columns */
+.account-cell {
+  flex: 1 !important;
+  flex-shrink: 0 !important;
+  justify-content: flex-start !important;
+}
+
+.tree-table .account-cell.depth-1 { margin-left: 0 !important; padding-left: 1em !important; }
+.tree-table .account-cell.depth-2 { margin-left: 0 !important; padding-left: 2em !important; }
+.tree-table .account-cell.depth-3 { margin-left: 0 !important; padding-left: 3em !important; }
+.tree-table .account-cell.depth-4 { margin-left: 0 !important; padding-left: 4em !important; }
+.tree-table .account-cell.depth-5 { margin-left: 0 !important; padding-left: 5em !important; }
+.tree-table .account-cell.depth-6 { margin-left: 0 !important; padding-left: 6em !important; }
+.tree-table .account-cell.depth-7 { margin-left: 0 !important; padding-left: 7em !important; }
+.tree-table .account-cell.depth-8 { margin-left: 0 !important; padding-left: 8em !important; }
+.tree-table .account-cell.depth-9 { margin-left: 0 !important; padding-left: 9em !important; }
+
+/* Unify tree-table into a rounded card */
+.tree-table-new {
+  background-color: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.5em;
+}
+
+.tree-table-new .head p {
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin-bottom: 0 !important;
+  border-bottom: 1px solid var(--table-border) !important;
+}
+
+.tree-table-new ol {
+  border-left: 1px solid var(--glass-border);
+  margin-left: 1em;
+  padding-left: 0;
+}
+
+.tree-table-new .num.other {
+  text-align: right;
+}
+
+.tree-table-new ol p {
+  border-top: none;
+}
+
+.tree-table-new li.depth-even > p {
+  background-color: light-dark(rgba(0, 0, 0, 0.03), rgba(255, 255, 255, 0.03));
+}
+
+
