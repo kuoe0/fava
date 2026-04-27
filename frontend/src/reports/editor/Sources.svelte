@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { ChevronDown, ChevronRight } from "@lucide/svelte";
+
   import type { SourceNode } from "../../lib/sources.ts";
   import Sources from "./Sources.svelte";
   import { expanded_directories, toggle_directory } from "./stores.ts";
@@ -35,6 +37,9 @@
     }
     event.stopPropagation();
   };
+
+  let fileName = $derived(node.name.split('/').pop() ?? '');
+  let dirPath = $derived(node.name.substring(0, node.name.lastIndexOf('/') + 1));
 </script>
 
 <li class:selected={is_selected} role="menuitem">
@@ -44,17 +49,26 @@
       title="Beancount data root directory
 Shift-Click to expand/collapse immediate directories
 Ctrl-/Cmd-/Meta-Click to expand/collapse all directories."
-      class="unset root"
+      class="unset root-modern"
       onclick={action}
     >
-      {node.name}
+      <div class="file-info">
+        <span class="file-name">{fileName}</span>
+        <span class="file-path">{dirPath}</span>
+      </div>
     </button>
   {:else}
     <p>
       {#if is_directory}
-        <button type="button" class="unset toggle" onclick={action}>
-          {is_expanded ? "▾" : "▸"}
+        <button type="button" class="unset toggle" onclick={action} aria-label={is_expanded ? "Collapse" : "Expand"}>
+          {#if is_expanded}
+            <ChevronDown size={14} />
+          {:else}
+            <ChevronRight size={14} />
+          {/if}
         </button>
+      {:else}
+        <span class="toggle-placeholder"></span>
       {/if}
       <button type="button" class="unset leaf" onclick={action}>
         {node.name}
@@ -72,22 +86,18 @@ Ctrl-/Cmd-/Meta-Click to expand/collapse all directories."
 
 <style>
   ul {
-    padding: 0 0 0 0.5em;
-    margin: 0;
+    padding: 0;
+    margin-left: 8px;
+    border-left: 1px solid var(--glass-border);
   }
 
   p {
-    position: relative;
     display: flex;
+    align-items: center;
+    gap: 0.25em;
     padding-right: 0.5em;
     margin: 0;
     overflow: hidden;
-    border-bottom: 1px solid var(--table-border);
-    border-left: 1px solid var(--table-border);
-  }
-
-  p > * {
-    padding: 1px;
   }
 
   .selected {
@@ -96,16 +106,65 @@ Ctrl-/Cmd-/Meta-Click to expand/collapse all directories."
 
   .leaf {
     flex-grow: 1;
-    margin-left: 1em;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  .root {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    text-align: left;
   }
 
   .toggle {
-    position: absolute;
-    margin: 0 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
     color: var(--treetable-expander);
+  }
+
+  .toggle-placeholder {
+    width: 16px;
+    height: 16px;
   }
 
   .root {
     margin: 0 0.25rem;
+  }
+
+  .root-modern {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .file-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .file-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color);
+  }
+
+  .file-path {
+    font-size: 11px;
+    color: var(--text-color-lightest);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 </style>

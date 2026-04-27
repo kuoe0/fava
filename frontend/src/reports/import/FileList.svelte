@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { X } from "@lucide/svelte";
+
   import type { Entry } from "../../entries/index.ts";
   import AccountInput from "../../entry-forms/AccountInput.svelte";
   import { _ } from "../../i18n.ts";
@@ -45,9 +47,10 @@
         remove(file.name);
       }}
       title={_("Delete")}
+      aria-label={_("Delete")}
       tabindex={-1}
     >
-      ×
+      <X size={16} />
     </button>
   </div>
   <div class="flex-column">

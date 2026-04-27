@@ -23,6 +23,7 @@
   }
 
   let { file_path, editor, codemirror_beancount, children }: Props = $props();
+  let fileMenuOpen = $state(false);
 
   function goToFileAndLine(filename: string, line?: number) {
     const url = $urlFor("editor/", { file_path: filename, line });
@@ -39,12 +40,13 @@
 
 <div>
   <AppMenu>
-    <AppMenuItem name={_("File")}>
+    <AppMenuItem name={_("File")} bind:open={fileMenuOpen}>
       <Sources
         is_root
         node={$sources_tree}
         on_select={(source: string) => {
           goToFileAndLine(source);
+          fileMenuOpen = false;
         }}
         selected={file_path}
       ></Sources>
