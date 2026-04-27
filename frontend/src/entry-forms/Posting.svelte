@@ -1,6 +1,7 @@
 <script lang="ts">
   import AutocompleteInput from "../AutocompleteInput.svelte";
   import type { EntryMetadata, Posting } from "../entries/index.ts";
+  import { Trash2 } from "@lucide/svelte";
   import { _ } from "../i18n.ts";
   import { currencies } from "../stores/index.ts";
   import AccountInput from "./AccountInput.svelte";
@@ -79,11 +80,12 @@
 >
   <button
     type="button"
-    class="muted round remove-row"
+    class="unset remove-row"
     onclick={remove}
     tabindex={-1}
+    aria-label="Remove"
   >
-    ×
+    <Trash2 size={16} />
   </button>
   <AccountInput
     bind:value={

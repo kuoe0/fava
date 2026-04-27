@@ -7,6 +7,7 @@
   } from "../api/index.ts";
   import AutocompleteInput from "../AutocompleteInput.svelte";
   import type { EntryMetadata, Transaction } from "../entries/index.ts";
+  import { Check, AlertTriangle, ChevronDown, X } from "@lucide/svelte";
   import { Posting } from "../entries/index.ts";
   import { _ } from "../i18n.ts";
   import { move } from "../lib/array.ts";
@@ -22,6 +23,22 @@
 
   let { entry = $bindable() }: Props = $props();
   let suggestions: string[] | undefined = $state.raw();
+  let isOpen = $state(false);
+
+  function selectFlag(flag: string) {
+    entry = entry.set("flag", flag);
+    isOpen = false;
+  }
+
+  function handleKeyDown(event: KeyboardEvent) {
+    if (event.key === "*") {
+      selectFlag("*");
+    } else if (event.key === "!") {
+      selectFlag("!");
+    } else if (event.key === "x" || event.key === "X") {
+      selectFlag("");
+    }
+  }
 
   let payee = $derived(entry.payee);
   $effect(() => {
@@ -96,17 +113,37 @@
     }
     required
   />
-  <input
-    type="text"
-    name="flag"
-    bind:value={
-      () => entry.flag,
-      (flag: string) => {
-        entry = entry.set("flag", flag);
-      }
-    }
-    required
-  />
+  <div class="flag-selector" class:open={isOpen}>
+    <button
+      type="button"
+      onclick={() => (isOpen = !isOpen)}
+      onkeydown={handleKeyDown}
+      onblur={() => setTimeout(() => (isOpen = false), 200)}
+      aria-label="Select Flag"
+    >
+      {#if entry.flag === '*'}
+        <Check size={16} />
+      {:else if entry.flag === '!'}
+        <AlertTriangle size={16} />
+      {:else}
+        <X size={16} />
+      {/if}
+      <ChevronDown size={12} />
+    </button>
+    {#if isOpen}
+      <ul class="options">
+        <li onclick={() => selectFlag('*')} class:selected={entry.flag === '*'}>
+          <Check size={16} />
+        </li>
+        <li onclick={() => selectFlag('!')} class:selected={entry.flag === '!'}>
+          <AlertTriangle size={16} />
+        </li>
+        <li onclick={() => selectFlag('')} class:selected={entry.flag === '' || !entry.flag}>
+          <X size={16} />
+        </li>
+      </ul>
+    {/if}
+  </div>
   <label>
     <span class="hide-on-desktop">{_("Payee")}:</span>
     <AutocompleteInput
@@ -184,11 +221,72 @@
 {/each}
 
 <style>
-  input[name="flag"] {
-    width: 1.5em;
-    padding-right: 2px;
-    padding-left: 2px;
-    text-align: center;
+  .flag-selector {
+    position: relative;
+    display: inline-block;
+    width: 3.5em;
+    height: 32px;
+  }
+
+  .flag-selector button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    padding: 0 4px;
+    background-color: var(--background-darker);
+    border: 1px solid var(--border-darker);
+    border-radius: 8px;
+    color: var(--text-color);
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+  }
+
+  .flag-selector button:focus {
+    border-color: var(--color-focus, #2684ff);
+    outline: none;
+  }
+
+  .flag-selector .options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    width: 140px;
+    margin: 4px 0 0;
+    padding: 4px;
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    box-shadow: var(--glass-shadow);
+    list-style: none;
+    backdrop-filter: var(--glass-blur);
+  }
+
+  .flag-selector .options li {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 6px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .flag-selector .options li:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .flag-selector .options li.selected {
+    background-color: var(--link-color);
+    color: white;
+  }
+
+  input[type="date"] {
+    height: 32px;
+    box-sizing: border-box;
   }
 
   .hide-on-desktop {
