@@ -100,7 +100,7 @@
 <style>
   .fixed-fullsize-container {
     display: grid;
-    grid-template-columns: 1fr 2fr 3fr;
+    grid-template-columns: max-content max-content 1fr;
   }
 
   .fixed-fullsize-container > :global(*) {
