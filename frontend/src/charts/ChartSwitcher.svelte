@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { ChartNoAxesColumn, ChartNoAxesColumnIncreasing, ChartPie,Network } from "@lucide/svelte";
+
 	import { _ } from "../i18n.ts";
 	import type { KeySpec } from "../keyboard-shortcuts.ts";
 	import { keyboardShortcut } from "../keyboard-shortcuts.ts";
@@ -8,7 +10,6 @@
 	import { chartContext } from "./context.ts";
 	import ConversionAndInterval from "./ConversionAndInterval.svelte";
 	import type { ParsedFavaChart } from "./index.ts";
-	import { BarChart2, PieChart, Network, BarChart } from "@lucide/svelte";
 
 	interface Props {
 		charts: readonly ParsedFavaChart[];
@@ -36,10 +37,10 @@
 	});
 
 	function getIcon(label: string) {
-		if (label.includes("Treemap")) return Network;
-		if (label.includes("Sunburst")) return PieChart;
-		if (label.includes("Stacked Bars")) return BarChart2;
-		if (label.includes("Single Bars")) return BarChart;
+		if (label.includes("Treemap")) {return Network;}
+		if (label.includes("Sunburst")) {return ChartPie;}
+		if (label.includes("Stacked Bars")) {return ChartNoAxesColumn;}
+		if (label.includes("Single Bars")) {return ChartNoAxesColumnIncreasing;}
 		return null;
 	}
 </script>
@@ -50,7 +51,7 @@
 	</Chart>
 	<div hidden={!$show_charts} class="chart-switcher-container" class:many-items={charts.length > 10}>
 		{#each charts as chart, index (chart.label)}
-			{@const Icon = getIcon(chart.label)}
+			{@const chartIcon = getIcon(chart.label)}
 			<button
 				type="button"
 				class="unset"
@@ -62,8 +63,8 @@
 				{@attach keyboardShortcut(shortcutNext(index))}
 				aria-label={chart.label}
 			>
-				{#if Icon}
-					<Icon size={16} />
+				{#if chartIcon}
+					<svelte:component this={chartIcon} size={16} />
 				{/if}
 				<span>{chart.label}</span>
 			</button>

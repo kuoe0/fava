@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Check, ChevronDown, TriangleAlert, X } from "@lucide/svelte";
+
   import {
     get_narration_transaction,
     get_narrations,
@@ -7,7 +9,6 @@
   } from "../api/index.ts";
   import AutocompleteInput from "../AutocompleteInput.svelte";
   import type { EntryMetadata, Transaction } from "../entries/index.ts";
-  import { Check, AlertTriangle, ChevronDown, X } from "@lucide/svelte";
   import { Posting } from "../entries/index.ts";
   import { _ } from "../i18n.ts";
   import { move } from "../lib/array.ts";
@@ -124,7 +125,7 @@
       {#if entry.flag === '*'}
         <Check size={16} />
       {:else if entry.flag === '!'}
-        <AlertTriangle size={16} />
+        <TriangleAlert size={16} />
       {:else}
         <X size={16} />
       {/if}
@@ -132,13 +133,13 @@
     </button>
     {#if isOpen}
       <ul class="options">
-        <li onclick={() => selectFlag('*')} class:selected={entry.flag === '*'}>
+        <li onclick={() => { selectFlag('*'); }} class:selected={entry.flag === '*'}>
           <Check size={16} />
         </li>
-        <li onclick={() => selectFlag('!')} class:selected={entry.flag === '!'}>
-          <AlertTriangle size={16} />
+        <li onclick={() => { selectFlag('!'); }} class:selected={entry.flag === '!'}>
+          <TriangleAlert size={16} />
         </li>
-        <li onclick={() => selectFlag('')} class:selected={entry.flag === '' || !entry.flag}>
+        <li onclick={() => { selectFlag(''); }} class:selected={entry.flag === '' || !entry.flag}>
           <X size={16} />
         </li>
       </ul>

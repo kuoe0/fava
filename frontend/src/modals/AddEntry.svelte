@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Save } from "@lucide/svelte";
+
   import { save_entries } from "../api/index.ts";
   import { Balance, Note, Transaction } from "../entries/index.ts";
   import Entry from "../entry-forms/Entry.svelte";
@@ -8,7 +10,6 @@
   import { addEntryContinue } from "../stores/editor.ts";
   import { hash } from "../stores/url.ts";
   import ModalBase from "./ModalBase.svelte";
-  import { Save, X } from "@lucide/svelte";
 
   /** The entry types which have support adding in the modal. */
   const entryTypes = [
@@ -72,7 +73,7 @@
         <span>{_("continue")}</span>
       </label>
       <span class="spacer"></span>
-      <button type="button" class="muted" onclick={() => router.close_overlay()}>
+      <button type="button" class="muted" onclick={() => { router.close_overlay(); }}>
         {_("Cancel")}
       </button>
       <button type="submit" class="primary-btn">

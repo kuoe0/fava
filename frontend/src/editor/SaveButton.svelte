@@ -1,7 +1,8 @@
 <script lang="ts">
+  import { Save } from "@lucide/svelte";
+
   import { _ } from "../i18n.ts";
   import { keyboardShortcut } from "../keyboard-shortcuts.ts";
-  import { Save } from "@lucide/svelte";
 
   interface Props {
     /** Whether anything is changed - the button is disabled otherwise. */

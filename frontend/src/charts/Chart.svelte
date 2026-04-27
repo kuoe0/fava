@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ChevronDown, ChevronLeft } from "@lucide/svelte";
   import type { Snippet } from "svelte";
 
   import { router } from "../router.ts";
@@ -9,7 +10,6 @@
     lineChartMode,
   } from "../stores/chart.ts";
   import { show_charts } from "../stores/url.ts";
-  import { ChevronDown, ChevronLeft } from "@lucide/svelte";
   import BarChart from "./BarChart.svelte";
   import ChartLegend from "./ChartLegend.svelte";
   import HierarchyContainer from "./HierarchyContainer.svelte";

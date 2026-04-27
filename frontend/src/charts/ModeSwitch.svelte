@@ -1,6 +1,7 @@
 <script lang="ts" generics="T extends string">
+	import { ChartArea, ChartLine, ChartNoAxesColumn, ChartNoAxesColumnIncreasing, ChartPie, Moon, Network, Settings, Sun } from "@lucide/svelte";
+
 	import type { LocalStoreSyncedStore } from "../lib/store.ts";
-	import { LineChart, AreaChart, BarChart2, BarChart, Network, PieChart, Settings, Moon, Sun } from "@lucide/svelte";
 
 	interface Props {
 		/** The store to show a switch for. */
@@ -11,27 +12,27 @@
 
 	function getIcon(option: string) {
 		const opt = option.toLowerCase();
-		if (opt.includes("line")) return LineChart;
-		if (opt.includes("area")) return AreaChart;
-		if (opt.includes("stacked")) return BarChart2;
-		if (opt.includes("single")) return BarChart;
-		if (opt.includes("treemap")) return Network;
-		if (opt.includes("sunburst")) return PieChart;
-		if (opt.includes("icicle")) return BarChart; // Fallback
-		if (opt.includes("light dark")) return Settings;
-		if (opt === "dark") return Moon;
-		if (opt === "light") return Sun;
+		if (opt.includes("line")) {return ChartLine;}
+		if (opt.includes("area")) {return ChartArea;}
+		if (opt.includes("stacked")) {return ChartNoAxesColumn;}
+		if (opt.includes("single")) {return ChartNoAxesColumnIncreasing;}
+		if (opt.includes("treemap")) {return Network;}
+		if (opt.includes("sunburst")) {return ChartPie;}
+		if (opt.includes("icicle")) {return ChartNoAxesColumnIncreasing;} // Fallback
+		if (opt.includes("light dark")) {return Settings;}
+		if (opt === "dark") {return Moon;}
+		if (opt === "light") {return Sun;}
 		return null;
 	}
 </script>
 
 <span class="button-group">
 	{#each store.values() as [option, name] (option)}
-		{@const Icon = getIcon(option)}
+		{@const chartIcon = getIcon(option)}
 		<label class="switch-option" class:selected={$store === option}>
 			<input type="radio" bind:group={$store} value={option} />
-			{#if Icon}
-				<Icon size={16} />
+			{#if chartIcon}
+				<svelte:component this={chartIcon} size={16} />
 			{/if}
 			<span>{name}</span>
 		</label>

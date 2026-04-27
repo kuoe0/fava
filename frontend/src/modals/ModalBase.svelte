@@ -5,12 +5,12 @@
    This tries to follow https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/.
 -->
 <script lang="ts">
+  import { X } from "@lucide/svelte";
   import type { Snippet } from "svelte";
   import type { Attachment } from "svelte/attachments";
 
   import { attemptFocus, getFocusableElements } from "../lib/focus.ts";
   import { router } from "../router.ts";
-  import { X } from "@lucide/svelte";
 
   interface Props {
     shown: boolean;

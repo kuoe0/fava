@@ -1,7 +1,8 @@
 <script lang="ts">
+  import { Trash2 } from "@lucide/svelte";
+
   import AutocompleteInput from "../AutocompleteInput.svelte";
   import type { EntryMetadata, Posting } from "../entries/index.ts";
-  import { Trash2 } from "@lucide/svelte";
   import { _ } from "../i18n.ts";
   import { currencies } from "../stores/index.ts";
   import AccountInput from "./AccountInput.svelte";

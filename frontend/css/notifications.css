@@ -4,24 +4,36 @@
   top: 60px;
   right: 10px;
   width: 400px;
+  z-index: var(--z-index-overlay);
 }
 
 .notifications li {
   display: block;
   width: 100%;
-  padding: 5px 10px;
-  margin-bottom: 0.5em;
-  color: var(--notification-color);
+  padding: 12px 16px;
+  margin-bottom: 0.75em;
+  color: hsl(0deg 0% 100%);
   white-space: pre-wrap;
   cursor: pointer;
-  background-color: var(--green);
+  background-color: hsla(142deg, 71%, 45%, 0.8);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid hsla(142deg, 71%, 45%, 0.2);
+  border-radius: 12px;
+  box-shadow: var(--glass-shadow);
+  transition: transform 0.2s;
+}
+
+.notifications li:hover {
+  transform: scale(1.02);
 }
 
 .notifications .error {
-  background-color: var(--error);
+  background-color: hsla(0deg, 84%, 60%, 0.8);
+  border-color: hsla(0deg, 84%, 60%, 0.2);
 }
 
 .notifications .warning {
-  color: var(--dark-gray);
-  background-color: var(--yellow);
+  color: hsl(0deg 0% 100%);
+  background-color: hsla(45deg, 93%, 47%, 0.8);
+  border-color: hsla(45deg, 93%, 47%, 0.2);
 }

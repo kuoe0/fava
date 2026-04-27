@@ -1,7 +1,8 @@
 <script lang="ts">
+  import { Plus,Trash2 } from "@lucide/svelte";
+
   import type { EntryMetadata } from "../entries/index.ts";
   import { _ } from "../i18n.ts";
-  import { Trash2, Plus } from "@lucide/svelte";
 
   interface Props {
     meta: EntryMetadata;
