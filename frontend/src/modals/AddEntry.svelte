@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Save } from "@lucide/svelte";
+
   import { save_entries } from "../api/index.ts";
   import { Balance, Note, Transaction } from "../entries/index.ts";
   import Entry from "../entry-forms/Entry.svelte";
@@ -63,7 +65,10 @@
         <input type="checkbox" bind:checked={$addEntryContinue} />
         <span>{_("continue")}</span>
       </label>
-      <button type="submit">{_("Save")}</button>
+      <button type="submit" class="primary-btn">
+        <Save size={16} />
+        <span>{_("Save")}</span>
+      </button>
     </div>
   </form>
 </ModalBase>
@@ -75,5 +80,21 @@
 
   label span {
     margin-right: 1rem;
+  }
+
+  .primary-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.4em 1em;
+    background-color: var(--link-color);
+    color: var(--background);
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+  }
+
+  .primary-btn:hover {
+    background-color: var(--link-hover-color);
   }
 </style>

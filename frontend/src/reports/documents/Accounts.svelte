@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { ChevronDown, ChevronRight } from "@lucide/svelte";
+
   import { leaf } from "../../lib/account.ts";
   import type { TreeNode } from "../../lib/tree.ts";
   import { toggle_account, toggled_accounts } from "../../stores/accounts.ts";
@@ -66,8 +68,15 @@
         onclick={(event) => {
           toggle_account(account, event);
           event.stopPropagation();
-        }}>{is_toggled ? "▸" : "▾"}</button
+        }}
+        aria-label={is_toggled ? "Expand" : "Collapse"}
       >
+        {#if is_toggled}
+          <ChevronRight size={16} />
+        {:else}
+          <ChevronDown size={16} />
+        {/if}
+      </button>
     {/if}
     <button
       type="button"
@@ -93,7 +102,7 @@
 
 <style>
   ul {
-    padding: 0 0 0 0.5em;
+    padding: 0 0 0 1em;
     margin: 0;
   }
 
@@ -122,12 +131,13 @@
 
   .leaf {
     flex-grow: 1;
-    margin-left: 1em;
+    padding-left: 0.5em;
   }
 
   .toggle {
-    position: absolute;
     margin: 0 0.25rem;
     color: var(--treetable-expander);
+    display: inline-flex;
+    align-items: center;
   }
 </style>

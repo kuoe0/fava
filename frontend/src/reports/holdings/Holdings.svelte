@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Search } from "@lucide/svelte";
+
   import { urlFor } from "../../helpers.ts";
   import { _ } from "../../i18n.ts";
   import QueryLinks from "../query/QueryLinks.svelte";
@@ -53,7 +55,21 @@
 </div>
 
 <p>
-  <a href={$urlFor("query", { query_string })}>{_("Query")}</a>
+  <a href={$urlFor("query", { query_string })} style="display: inline-flex; align-items: center; gap: 0.25em;">
+    <Search size={16} />
+    <span>{_("Query")}</span>
+  </a>
   <QueryLinks query={query_string} />
 </p>
 <QueryTable table={query_result_table} filter_empty="units" />
+
+<style>
+  .headerline h3 {
+    display: inline-block;
+    margin-right: 1em;
+  }
+
+  .headerline h3:last-child {
+    margin-right: 0;
+  }
+</style>

@@ -5,6 +5,7 @@
   The default slot should filled with its vertically arranged sub-items.
 -->
 <script lang="ts">
+  import { ChevronDown } from "@lucide/svelte";
   import type { Snippet } from "svelte";
 
   interface Props {
@@ -34,6 +35,7 @@
   }}
 >
   {name}
+  <ChevronDown size={12} />
   <ul role="menu">
     {@render children()}
   </ul>
@@ -41,6 +43,10 @@
 
 <style>
   span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25em;
+    position: relative;
     padding: 0.7em 0.5em;
     cursor: pointer;
   }
@@ -50,21 +56,22 @@
     background-color: var(--background-darkest);
   }
 
-  span::after {
-    content: "▾";
-  }
-
   ul {
     position: absolute;
+    top: 100%;
+    left: 0;
     z-index: var(--z-index-floating-ui);
     display: none;
-    width: 500px;
+    width: max-content;
+    min-width: 250px;
+    max-width: 90vw;
     max-height: 400px;
-    margin: 0.7em 0 0 -0.5em; /* The top margin should match the (bottom) padding of the span above. */
+    margin: 0;
     overflow-y: auto;
     background-color: var(--background);
     border: 1px solid var(--border);
     box-shadow: var(--box-shadow-dropdown);
+    padding: 0.5rem 0;
   }
 
   span.open > ul,

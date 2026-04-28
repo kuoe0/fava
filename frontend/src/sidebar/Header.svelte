@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ChevronDown, RotateCw } from "@lucide/svelte";
   import { keyboardShortcut } from "../keyboard-shortcuts.ts";
   import { router } from "../router.ts";
   import { ledgerData } from "../stores/index.ts";
@@ -15,7 +16,7 @@
 <header>
   <HeaderIcon />
   <h1>
-    {$ledger_title}{#if has_dropdown}&nbsp;▾{/if}<PageTitle />
+    {$ledger_title}{#if has_dropdown}&nbsp;<ChevronDown size={16} style="display: inline; vertical-align: middle;" />{/if}<PageTitle />
     {#if has_dropdown}
       <div class="beancount-files">
         <ul>
@@ -28,23 +29,33 @@
       </div>
     {/if}
   </h1>
-  <button
-    type="button"
-    hidden={!$has_changes}
-    class="reload-page"
-    {@attach keyboardShortcut("r")}
-    onclick={router.reload}
-  >
-    &#8635;
-  </button>
+  {#if $has_changes}
+    <button
+      type="button"
+      class="reload-page"
+      {@attach keyboardShortcut("r")}
+      onclick={router.reload}
+      aria-label="Reload Page"
+    >
+      <RotateCw size={16} />
+    </button>
+  {/if}
   <span class="spacer"></span>
   <FilterForm />
 </header>
 
 <style>
   .reload-page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
     color: var(--dark-gray);
     background-color: var(--warning);
+    border: none;
+    cursor: pointer;
   }
 
   h1 {

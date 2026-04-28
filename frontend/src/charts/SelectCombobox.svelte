@@ -15,6 +15,8 @@
     https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
 -->
 <script lang="ts">
+  import { ChevronDown } from "@lucide/svelte";
+
   interface Props {
     /** The currently entered value. */
     value: string;
@@ -167,8 +169,10 @@
         action();
       }
     }}
+    style="display: inline-flex; align-items: center; gap: 0.25em;"
   >
-    {description(value)}
+    <span>{description(value)}</span>
+    <ChevronDown size={14} />
   </button>
   <ul {hidden} role="listbox" id={listbox_id} bind:this={ul}>
     {#each options as option, i (option)}

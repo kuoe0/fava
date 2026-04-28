@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Menu, Plus } from "@lucide/svelte";
   import AsideContents from "./AsideContents.svelte";
 
   /** Whether the sidebar is currently shown. */
@@ -12,8 +13,12 @@
   <div class="overlay" onclick={toggle} aria-hidden="true"></div>
 {/if}
 <div class:active class="aside-buttons">
-  <button type="button" onclick={toggle}>☰</button>
-  <a class="button" href="#add-transaction">+</a>
+  <button type="button" onclick={toggle} aria-label="Toggle Sidebar">
+    <Menu size={24} />
+  </button>
+  <a class="button" href="#add-transaction" aria-label="Add Transaction">
+    <Plus size={24} />
+  </a>
 </div>
 <aside class:active>
   <AsideContents />
@@ -77,17 +82,18 @@
     }
 
     .aside-buttons > * {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       width: 42px;
       height: 42px;
       color: var(--mobile-button-text);
-      text-align: center;
       background-color: var(--sidebar-background);
       border: 1px solid var(--sidebar-border);
+      padding: 0;
     }
 
-    .aside-buttons a {
-      font-size: 28px;
-    }
+
   }
 
   @media print {

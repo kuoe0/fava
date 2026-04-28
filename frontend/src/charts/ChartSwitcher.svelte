@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { ChartNoAxesColumn, ChartNoAxesColumnIncreasing, ChartPie, Network } from "@lucide/svelte";
+
   import { _ } from "../i18n.ts";
   import type { KeySpec } from "../keyboard-shortcuts.ts";
   import { keyboardShortcut } from "../keyboard-shortcuts.ts";
@@ -33,6 +35,14 @@
       ? { key: "c", note: _("Next") }
       : undefined;
   });
+
+  function getIcon(label: string) {
+    if (label.includes("Treemap")) { return Network; }
+    if (label.includes("Sunburst")) { return ChartPie; }
+    if (label.includes("Stacked Bars")) { return ChartNoAxesColumn; }
+    if (label.includes("Single Bars")) { return ChartNoAxesColumnIncreasing; }
+    return null;
+  }
 </script>
 
 {#if active_chart}
@@ -41,6 +51,7 @@
   </Chart>
   <div hidden={!$show_charts}>
     {#each charts as chart, index (chart.label)}
+      {@const ChartIcon = getIcon(chart.label)}
       <button
         type="button"
         class="unset"
@@ -50,8 +61,13 @@
         }}
         {@attach keyboardShortcut(shortcutPrevious(index))}
         {@attach keyboardShortcut(shortcutNext(index))}
+        aria-label={chart.label}
+        style="display: inline-flex; align-items: center; gap: 0.25em;"
       >
-        {chart.label}
+        {#if ChartIcon}
+          <ChartIcon size={14} />
+        {/if}
+        <span>{chart.label}</span>
       </button>
     {/each}
   </div>

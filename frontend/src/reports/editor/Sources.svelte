@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { ChevronDown, ChevronRight } from "@lucide/svelte";
+
   import type { SourceNode } from "../../lib/sources.ts";
   import Sources from "./Sources.svelte";
   import { expanded_directories, toggle_directory } from "./stores.ts";
@@ -52,9 +54,15 @@ Ctrl-/Cmd-/Meta-Click to expand/collapse all directories."
   {:else}
     <p>
       {#if is_directory}
-        <button type="button" class="unset toggle" onclick={action}>
-          {is_expanded ? "▾" : "▸"}
+        <button type="button" class="unset toggle" onclick={action} aria-label={is_expanded ? "Collapse" : "Expand"}>
+          {#if is_expanded}
+            <ChevronDown size={14} />
+          {:else}
+            <ChevronRight size={14} />
+          {/if}
         </button>
+      {:else}
+        <span class="toggle-placeholder"></span>
       {/if}
       <button type="button" class="unset leaf" onclick={action}>
         {node.name}
@@ -96,16 +104,25 @@ Ctrl-/Cmd-/Meta-Click to expand/collapse all directories."
 
   .leaf {
     flex-grow: 1;
-    margin-left: 1em;
+    text-align: left;
   }
 
   .toggle {
-    position: absolute;
-    margin: 0 0.25rem;
+    margin: 0;
     color: var(--treetable-expander);
+    display: inline-flex;
+    align-items: center;
+    width: 16px;
+    justify-content: center;
+  }
+
+  .toggle-placeholder {
+    display: inline-block;
+    width: 16px;
   }
 
   .root {
     margin: 0 0.25rem;
+    text-align: left;
   }
 </style>

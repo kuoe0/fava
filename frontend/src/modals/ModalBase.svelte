@@ -5,6 +5,7 @@
    This tries to follow https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/.
 -->
 <script lang="ts">
+  import { X } from "@lucide/svelte";
   import type { Snippet } from "svelte";
   import type { Attachment } from "svelte/attachments";
 
@@ -66,8 +67,8 @@
     <div class="background" onclick={closeHandler} aria-hidden="true"></div>
     <div class="content" role="dialog" aria-modal="true" {@attach handleFocus}>
       {@render children()}
-      <button type="button" class="muted close" onclick={closeHandler}>
-        x
+      <button type="button" class="muted close" onclick={closeHandler} aria-label="Close">
+        <X size={16} />
       </button>
     </div>
   </div>
@@ -118,8 +119,21 @@
     width: 2em;
     height: 2em;
     margin: 0;
-    line-height: 1em;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     color: var(--text-color-lighter);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .close:hover {
+    color: var(--text-color);
+    background-color: rgba(128, 128, 128, 0.1) !important;
+    box-shadow: none !important;
+    border-radius: 4px;
   }
 
   .content :global(form),

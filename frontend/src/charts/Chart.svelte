@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ChevronDown, ChevronLeft } from "@lucide/svelte";
   import type { Snippet } from "svelte";
 
   import { router } from "../router.ts";
@@ -69,8 +70,13 @@
     onclick={() => {
       router.set_search_param("charts", $show_charts ? "false" : "");
     }}
+    aria-label={$show_charts ? "Hide charts" : "Show charts"}
   >
-    {$show_charts ? "▼" : "◀"}
+    {#if $show_charts}
+      <ChevronDown size={16} />
+    {:else}
+      <ChevronLeft size={16} />
+    {/if}
   </button>
 </div>
 <div hidden={!$show_charts} bind:clientWidth={width}>
@@ -89,7 +95,34 @@
 
 <style>
   .flex-row {
+    display: flex;
+    align-items: center;
     margin-bottom: var(--flex-gap);
+  }
+
+  button.show-charts {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 34px !important;
+    height: 34px !important;
+    padding: 0 !important;
+    color: var(--background);
+    background-color: var(--link-color);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  @media (width <= 767px) {
+    button.show-charts {
+      width: 40px !important;
+      height: 40px !important;
+    }
+  }
+
+  button.show-charts:hover {
+    background-color: var(--link-hover-color);
   }
 
   @media print {

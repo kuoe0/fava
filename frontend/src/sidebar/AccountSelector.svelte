@@ -24,11 +24,13 @@
     key="g a"
     onSelect={select}
     onEnter={select}
+    --autocomplete-wrapper-flex="1"
   />
 </li>
 
 <style>
   li {
+    display: flex;
     --input-border: none;
     --input-padding: 0.25em 0.5em 0.25em 1em;
     --autocomplete-list-position: fixed;

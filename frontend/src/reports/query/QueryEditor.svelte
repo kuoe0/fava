@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Play } from "@lucide/svelte";
+
   import { attach_editor } from "../../codemirror/dom.ts";
   import type { CodemirrorBql } from "../../codemirror/types.ts";
   import { _ } from "../../i18n.ts";
@@ -36,8 +38,8 @@
   }}
 >
   <div {@attach attach_editor(editor)}></div>
-  <button type="submit" {@attach keyboardShortcut("Control+Enter")}>
-    {_("Submit")}
+  <button type="submit" {@attach keyboardShortcut("Control+Enter")} aria-label={_("Submit")}>
+    <Play size={16} />
   </button>
 </form>
 
@@ -49,7 +51,22 @@
   }
 
   button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
     margin: 0;
+    background-color: var(--link-color);
+    color: var(--background);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  button:hover {
+    background-color: var(--link-hover-color);
   }
 
   div {

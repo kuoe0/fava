@@ -12,6 +12,7 @@
     https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-autocomplete-list/
 -->
 <script lang="ts">
+  import { X } from "@lucide/svelte";
   import type { KeySpec } from "./keyboard-shortcuts.ts";
   import { keyboardShortcut } from "./keyboard-shortcuts.ts";
   import {
@@ -185,8 +186,9 @@
           onSelect?.(input);
         }
       }}
+      aria-label="Clear"
     >
-      ×
+      <X size={16} />
     </button>
   {/if}
   {#if filteredSuggestions.length}

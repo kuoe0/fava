@@ -3,6 +3,8 @@
     Account name cell.
 -->
 <script lang="ts">
+  import { ChevronDown, ChevronRight } from "@lucide/svelte";
+
   import type { AccountTreeNode } from "../charts/hierarchy.ts";
   import { urlForAccount } from "../helpers.ts";
   import { leaf } from "../lib/account.ts";
@@ -28,9 +30,16 @@
       onclick={(event) => {
         toggle_account(account, event);
       }}
+      aria-label={is_toggled ? "Expand" : "Collapse"}
     >
-      {is_toggled ? "▸" : "▾"}
+      {#if is_toggled}
+        <ChevronRight size={14} />
+      {:else}
+        <ChevronDown size={14} />
+      {/if}
     </button>
+  {:else}
+    <span class="toggle-placeholder"></span>
   {/if}
   <a href={$urlForAccount(account)} class="account">
     {leaf(account)}
@@ -46,7 +55,7 @@
   }
 
   a {
-    margin-left: 1em;
+    margin-left: 1.5em;
   }
 
   span {

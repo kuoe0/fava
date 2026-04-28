@@ -1,4 +1,22 @@
 <script lang="ts">
+  import { 
+    Book,
+    Box,
+    Briefcase,
+    Calendar,
+    ChartNoAxesColumn,
+    CircleQuestionMark,
+    Download,
+    FileText,
+    ListChecks,
+    Plus, 
+    Scale,
+    SlidersVertical,
+    SquarePen,
+    Terminal,
+    TrendingUp,
+    Upload  } from "@lucide/svelte";
+
   import { urlFor } from "../helpers.ts";
   import { _ } from "../i18n.ts";
   import { keyboardShortcut } from "../keyboard-shortcuts.ts";
@@ -24,11 +42,11 @@
   </ul>
 {/if}
 <ul class="navigation">
-  <Link report="income_statement" name={_("Income Statement")} key="g i" />
-  <Link report="balance_sheet" name={_("Balance Sheet")} key="g b" />
-  <Link report="trial_balance" name={_("Trial Balance")} key="g t" />
-  <Link report="journal" name={_("Journal")} key="g j" />
-  <Link report="query" name={_("Query")} key="g q">
+  <Link report="income_statement" name={_("Income Statement")} key="g i" icon={TrendingUp} />
+  <Link report="balance_sheet" name={_("Balance Sheet")} key="g b" icon={Scale} />
+  <Link report="trial_balance" name={_("Trial Balance")} key="g t" icon={ListChecks} />
+  <Link report="journal" name={_("Journal")} key="g j" icon={Book} />
+  <Link report="query" name={_("Query")} key="g q" icon={Terminal}>
     {#if user_queries.length}
       <ul class="submenu">
         {#each user_queries as { query_string, name } (query_string)}
@@ -42,38 +60,49 @@
   <AccountSelector />
 </ul>
 <ul class="navigation">
-  <Link report="holdings" name={_("Holdings")} key="g h" />
-  <Link report="commodities" name={_("Commodities")} key="g c" />
-  <Link report="documents" name={_("Documents")} key="g d" />
+  <Link report="holdings" name={_("Holdings")} key="g h" icon={Briefcase} />
+  <Link report="commodities" name={_("Commodities")} key="g c" icon={Box} />
+  <Link report="documents" name={_("Documents")} key="g d" icon={FileText} />
   <Link
     report="events"
     name={_("Events")}
     key="g E"
     bubble={[upcoming_events_count, "info"]}
+    icon={Calendar}
   />
-  <Link report="statistics" name={_("Statistics")} key="g s" />
+  <Link report="statistics" name={_("Statistics")} key="g s" icon={ChartNoAxesColumn} />
 </ul>
 <ul class="navigation">
-  <Link report="editor" name={_("Editor")} key="g e">
-    <a
-      href="#add-transaction"
-      class="secondary add-transaction"
-      title={_("Add Journal Entry")}
-      {@attach keyboardShortcut("n")}>+</a
-    >
+  <Link report="editor" name={_("Editor")} key="g e" icon={SquarePen}>
+    {#snippet actions()}
+      <a
+        href="#add-transaction"
+        class="secondary add-transaction"
+        title={_("Add Journal Entry")}
+        {@attach keyboardShortcut("n")}
+        aria-label={_("Add Journal Entry")}
+      >
+        <Plus size={16} />
+      </a>
+    {/snippet}
   </Link>
   {#if $errors.length > 0}
     <Link
       report="errors"
       name={_("Errors")}
       bubble={[$errors.length, "error"]}
+      icon={FileText}
     />
   {/if}
-  <Link report="import" name={_("Import")} key="g n">
-    <a href="#export" class="secondary" title={_("Export")}>⬇</a>
+  <Link report="import" name={_("Import")} key="g n" icon={Upload}>
+    {#snippet actions()}
+      <a href="#export" class="secondary" title={_("Export")} aria-label={_("Export")}>
+        <Download size={16} />
+      </a>
+    {/snippet}
   </Link>
-  <Link report="options" name={_("Options")} key="g o" />
-  <Link report="help" name={_("Help")} key="g H" />
+  <Link report="options" name={_("Options")} key="g o" icon={SlidersVertical} />
+  <Link report="help" name={_("Help")} key="g H" icon={CircleQuestionMark} />
 </ul>
 {#if extension_reports.length}
   <ul class="navigation">
@@ -85,7 +114,7 @@
 
 <style>
   .navigation {
-    padding-bottom: 0.5rem;
+    padding: 0 0 0.5rem 0;
     margin: 0;
   }
 
@@ -106,15 +135,24 @@
   }
 
   .secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 30px;
-    padding: 3px 9px;
-    line-height: 22px;
+    height: 30px;
+    padding: 0;
     color: inherit;
-    background-color: var(--sidebar-background);
+    background-color: transparent;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+  }
+
+  .secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
   }
 
   .add-transaction {
-    font-size: 23px;
+    font-size: 23px; /* Fallback or override if needed */
   }
 
   .submenu {

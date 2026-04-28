@@ -3,6 +3,7 @@
     Header for the account column.
 -->
 <script lang="ts">
+  import { ChevronsDown } from "@lucide/svelte";
   import { some } from "d3-array";
 
   import { _ } from "../i18n.ts";
@@ -30,13 +31,13 @@
   {#if toggled_children}
     <button
       type="button"
-      class="link"
       title={_("Expand all accounts")}
       onclick={() => {
         expand_all(account);
       }}
     >
-      {_("Expand all")}
+      <ChevronsDown size={14} />
+      <span>{_("Expand all")}</span>
     </button>
   {/if}
 </span>
@@ -46,12 +47,27 @@
     flex: 1;
     min-width: 14em;
     max-width: 30em;
+    display: inline-flex;
+    align-items: center;
   }
 
   button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25em;
     margin-left: 1em;
     font-weight: normal;
     color: inherit;
     opacity: 0.5;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  button:hover {
+    opacity: 1;
+    color: var(--link-color);
+    background-color: transparent !important;
+    box-shadow: none !important;
   }
 </style>
